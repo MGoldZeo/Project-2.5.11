@@ -1,12 +1,14 @@
 import java.util.Scanner;
 
-public class Player {
+public class Player
+{
     public int playernum = 0;
     private int score = 0;
     private int pb = 0;
     private int superscore;
     private String name = "";
     private boolean out = false;
+
     public Player(int num)
     {
         playernum = num;
@@ -15,20 +17,24 @@ public class Player {
         System.out.println("They call me:");
         name = nminp.nextLine();
     }
+
     public void ScoreIncrement(int tileamount)
     {
         score += tileamount;
     }
+
     public void lose()
     {
         wipe();
         out = true;
     }
+
     public void win()
     {
         wipe();
-        this.superscore ++;
+        this.superscore++;
     }
+
     public void wipe()
     {
         if (this.score >= this.pb)
@@ -44,7 +50,7 @@ public class Player {
         Scanner pointsworthy = new Scanner(System.in);
         System.out.println("How many pieces will you take, " + this.getName() + "?:");
         int p = pointsworthy.nextInt();
-        while ((p < 1 || p > (F.getPiecesLeft()/2)) && F.getPiecesLeft() > 1)
+        while ((p < 1 || p > (F.getPiecesLeft() / 2)) && F.getPiecesLeft() > 1)
         {
             System.out.println("Sorry, please enter a value that is between one and half of the total pieces left: ");
             p = pointsworthy.nextInt();
@@ -62,19 +68,31 @@ public class Player {
     }
 
 
-    public boolean isOut() {
+    public boolean isOut()
+    {
         return out;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public int getScore() {
+    public int getScore()
+    {
         return score;
     }
-    public int getPb() {return pb;}
-    public int getSuperscore() {return superscore;}
+
+    public int getPb()
+    {
+        return pb;
+    }
+
+    public int getSuperscore()
+    {
+        return superscore;
+    }
+
     public void clear()
     {
         score = 0;

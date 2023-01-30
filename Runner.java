@@ -1,15 +1,18 @@
 import java.util.Scanner;
 
-public class Runner {
-    public static void main(String[] args) {
-        int p = (int) (Math.random()*2);
+public class Runner
+{
+    public static void main(String[] args)
+    {
+        int p = (int) (Math.random() * 2);
         Player player1 = new Player(p);
-        Player player2 = new Player(1-p);
+        Player player2 = new Player(1 - p);
         Gameboard game = new Gameboard();
         Play(player1, player2, game);
     }
 
-    private static void Play(Player player1, Player player2, Gameboard game) {
+    private static void Play(Player player1, Player player2, Gameboard game)
+    {
         System.out.println(player1.getName() + " has won " + player1.getSuperscore() + " games and " + player2.getName() + " has won " + player2.getSuperscore() + " games so far");
         if (player1.playernum == 0)
         {

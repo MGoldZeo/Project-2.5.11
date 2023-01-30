@@ -1,25 +1,24 @@
 import java.util.Scanner;
 
-public class Gameboard {
+public class Gameboard
+{
     private static int totalPieces = 0;
     private int piecesLeft = 0;
 
     public Gameboard()
     {
-        totalPieces = (int) (40 * Math.random());
+        totalPieces = (int) (41 * Math.random());
         totalPieces += 10;
         piecesLeft = totalPieces;
     }
 
-    public static int getTotalPieces() {
-        return totalPieces;
-    }
-
-    public int getPiecesLeft() {
+    public int getPiecesLeft()
+    {
         return piecesLeft;
     }
 
-    public void setPiecesLeft(int p) {
+    public void setPiecesLeft(int p)
+    {
         this.piecesLeft = piecesLeft - p;
     }
 
