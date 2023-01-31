@@ -5,9 +5,19 @@ public class Runner
     public static void main(String[] args)
     {
         int p = (int) (Math.random() * 2);
-        Player player1 = new Player(p);
-        Player player2 = new Player(1 - p);
+        Player player1 = new Player(p, false);
         Gameboard game = new Gameboard();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Play against the computer? (Y/N)");
+        Player player2;
+        if(game.ynCheck(sc.nextLine()))
+        {
+            player2 = new Player(1 - p, true);
+        }
+        else
+        {
+            player2 = new Player(1 - p, false);
+        }
         Play(player1, player2, game);
     }
 
@@ -71,16 +81,35 @@ public class Runner
         System.out.println("Play again? (Y/N)");
         if (game.ynCheck(sc.nextLine()))
         {
-            System.out.println("Would you like to replace the lowest scoring player? (Y/N)");
+            System.out.println("Would you like to replace the loser? (Y/N)");
             if (game.ynCheck(sc.nextLine()))
             {
-                if (p1.isOut())
+                System.out.println("Would you like to play against the CPU this time? (Y/N)");
+                boolean yn = game.ynCheck(sc.nextLine());
+                if (p1.isAuto() || p2.isAuto()) {
+                    System.out.println("The CPU has been reset.");
+                    if (p2.isAuto() && p1.isOut() && yn)
+                    {
+                        Player p3 = p1;
+                        p1 = p2;
+                        p2 = p3;
+                        p1.clear(yn);
+                    }
+                    if (p1.isAuto() && p2.isOut() && yn)
+                    {
+                        Player p3 = p2;
+                        p2 = p1;
+                        p1 = p3;
+                        p2.clear(yn);
+                    }
+                }
+                else if (p1.isOut() && !yn)
                 {
-                    p1.clear();
+                    p1.clear(yn);
                 }
                 else
                 {
-                    p2.clear();
+                    p2.clear(yn);
                 }
                 Play(p1, p2, game);
             }

@@ -2,20 +2,30 @@ import java.util.Scanner;
 
 public class Player
 {
-    public int playernum = 0;
+    public int playernum;
     private int score = 0;
     private int pb = 0;
     private int superscore;
-    private String name = "";
+    private String name;
     private boolean out = false;
+    private boolean auto;
 
-    public Player(int num)
+    public Player(int num, boolean ai )
     {
+        auto = ai;
         playernum = num;
         Scanner nminp = new Scanner(System.in);
-        System.out.println("What is your name?");
-        System.out.println("They call me:");
-        name = nminp.nextLine();
+        if (!auto)
+        {
+            System.out.println("What is your name?");
+            System.out.println("They call me:");
+            name = nminp.nextLine();
+        }
+        else
+        {
+            name = "CPU";
+        }
+
     }
 
     public void ScoreIncrement(int tileamount)
@@ -47,24 +57,26 @@ public class Player
 
     public boolean takePieces(Gameboard F)
     {
-        Scanner pointsworthy = new Scanner(System.in);
-        System.out.println("How many pieces will you take, " + this.getName() + "?:");
-        int p = pointsworthy.nextInt();
-        while ((p < 1 || p > (F.getPiecesLeft() / 2)) && F.getPiecesLeft() > 1)
+        int p;
+        if (!this.auto)
         {
-            System.out.println("Sorry, please enter a value that is between one and half of the total pieces left: ");
+            Scanner pointsworthy = new Scanner(System.in);
+            System.out.println("How many pieces will you take, " + this.getName() + "?:");
             p = pointsworthy.nextInt();
-        }
-        ScoreIncrement(p);
-        F.setPiecesLeft(p);
-        if (F.getPiecesLeft() == 0)
-        {
-            return true;
+            while ((p < 1 || p > (F.getPiecesLeft() / 2)) && F.getPiecesLeft() > 1)
+            {
+                System.out.println("Sorry, please enter a value that is between one and half of the total pieces left: ");
+                p = pointsworthy.nextInt();
+            }
         }
         else
         {
-            return false;
+            p =  (int) (Math.random()*(F.getPiecesLeft()/2) + 1);
+            System.out.println("The CPU has taken " + p + " pieces.");
         }
+        ScoreIncrement(p);
+        F.setPiecesLeft(p);
+        return F.getPiecesLeft() == 0;
     }
 
 
@@ -93,16 +105,29 @@ public class Player
         return superscore;
     }
 
-    public void clear()
+    public boolean isAuto()
     {
+        return auto;
+    }
+
+    public void clear(boolean CPU)
+    {
+        auto = CPU;
         score = 0;
         superscore = 0;
         name = "";
         out = false;
         Scanner sc = new Scanner(System.in);
-        System.out.println("What is the new player's name?");
-        System.out.println("Their name is: ");
-        this.name = sc.nextLine();
+        if (!CPU)
+        {
+            System.out.println("What is the new player's name?");
+            System.out.println("Their name is: ");
+            this.name = sc.nextLine();
+        }
+        else
+        {
+            name = "CPU";
+        }
     }
 
 }
