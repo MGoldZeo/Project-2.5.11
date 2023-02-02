@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Player
@@ -10,6 +11,13 @@ public class Player
     private boolean out = false;
     private boolean auto;
 
+    /**
+     * This constructor takes in a boolean saying whether or not to get initialised as a computer
+     * It also takes in a number to set as the player number
+     * Finally, it takes in the player name from user input
+     * @param num
+     * @param ai
+     */
     public Player(int num, boolean ai )
     {
         auto = ai;
@@ -33,18 +41,29 @@ public class Player
         score += tileamount;
     }
 
+    /**
+     * This discusses the case in which the player loses
+     * It sets them to out and clears their score and other instance variables
+     */
     public void lose()
     {
         wipe();
         out = true;
     }
 
+    /**
+     * This discusses the case in which the player wins
+     * It increases the superscore and clears their score and other instance variables
+     */
     public void win()
     {
         wipe();
         this.superscore++;
     }
 
+    /**
+     * This resets the instance variables and sets the personal best
+     */
     public void wipe()
     {
         if (this.score >= this.pb)
@@ -55,14 +74,25 @@ public class Player
         this.score = 0;
     }
 
+    /**
+     * This comprises the main functionality of the player
+     * It will take pieces from the gameboard and increment the score
+     * It ensures that the amount of tiles is between one and half of the total
+     * @param F
+     * @return
+     */
     public boolean takePieces(Gameboard F)
     {
-        int p;
+        // This is the amount of tiles that are taken, it will change based on user input
+        int p = 0;
         if (!this.auto)
         {
             Scanner pointsworthy = new Scanner(System.in);
             System.out.println("How many pieces will you take, " + this.getName() + "?:");
-            p = pointsworthy.nextInt();
+            while (p == 0)
+            {
+                p = getP(p, pointsworthy);
+            }
             while ((p < 1 || p > (F.getPiecesLeft() / 2)) && F.getPiecesLeft() > 1)
             {
                 System.out.println("Sorry, please enter a value that is between one and half of the total pieces left: ");
@@ -77,6 +107,20 @@ public class Player
         ScoreIncrement(p);
         F.setPiecesLeft(p);
         return F.getPiecesLeft() == 0;
+    }
+
+    private static int getP(int p, Scanner pointsworthy)
+    {
+        try
+        {
+            p = pointsworthy.nextInt();
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println("Enter an integer: ");
+            pointsworthy.nextLine();
+        }
+        return p;
     }
 
 
@@ -110,6 +154,11 @@ public class Player
         return auto;
     }
 
+    /**
+     * This is an overloaded version of the clear method
+     * It is specifically designed for the CPU player in the instance that they are replaced
+     * @param CPU
+     */
     public void clear(boolean CPU)
     {
         auto = CPU;

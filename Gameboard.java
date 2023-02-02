@@ -5,6 +5,10 @@ public class Gameboard
     private static int totalPieces = 0;
     private int piecesLeft;
 
+    /**
+     * This constructor randomises the gameboard and the amount of pieces it has
+     * It also initialises the pieces left to be the total amount of pieces
+     */
     public Gameboard()
     {
         totalPieces = (int) (41 * Math.random());
@@ -22,7 +26,11 @@ public class Gameboard
         this.piecesLeft = piecesLeft - p;
     }
 
-
+    /**
+     * This checker is just to ensure whether the answer is yes or no. It will return a boolean accordingly
+     * @param ans
+     * @return
+     */
     public boolean ynCheck(String ans)
     {
         if (ans.equalsIgnoreCase("y") || ans.equalsIgnoreCase("yes"))
@@ -45,6 +53,9 @@ public class Gameboard
         return ynCheck(ans);
     }
 
+    /**
+     * This reconstructs the gameboard, resetting all of the instance variables to the same initial values.
+     */
     public void replay()
     {
         totalPieces = (int) (40 * Math.random());

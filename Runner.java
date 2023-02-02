@@ -2,6 +2,10 @@ import java.util.Scanner;
 
 public class Runner
 {
+    /**
+     * This is our main method, running the program
+     * @param args
+     */
     public static void main(String[] args)
     {
         int p = (int) (Math.random() * 2);
@@ -21,16 +25,26 @@ public class Runner
         Play(player1, player2, game);
     }
 
+    /**
+     * This method contains all of the code required for gameplay.
+     * It makes use of all the methods in the other classes to provide a relevant and immersive gameplay experience
+     *
+     * @param player1
+     * @param player2
+     * @param game
+     */
     private static void Play(Player player1, Player player2, Gameboard game)
     {
         System.out.println(player1.getName() + " has won " + player1.getSuperscore() + " games and " + player2.getName() + " has won " + player2.getSuperscore() + " games so far");
         if (player1.playernum == 0)
+        // This loop is for if player 1's randomly selected player number is zero, and the else loop is for player2
         {
             while (game.getPiecesLeft() > 0)
             {
                 Scanner sc = new Scanner(System.in);
                 System.out.println("There are " + game.getPiecesLeft() + " tiles left. " + player1.getName() + " has " + player1.getScore() + " points, and " + player2.getName() + " has " + player2.getScore() + " points.");
                 if (player1.takePieces(game))
+                // This handles the case in which player1 loses by taking the last piece. The other if statement handles the case in which player2 loses. Otherwise the game continues.
                 {
                     System.out.println(player2.getName() + " wins with " + player2.getScore() + " points.");
                     player1.lose();
@@ -76,6 +90,13 @@ public class Runner
         }
     }
 
+    /**
+     *
+     * @param game
+     * @param sc
+     * @param p1
+     * @param p2
+     */
     public static void playAgain(Gameboard game, Scanner sc, Player p1, Player p2)
     {
         System.out.println("Play again? (Y/N)");
@@ -85,31 +106,33 @@ public class Runner
             if (game.ynCheck(sc.nextLine()))
             {
                 System.out.println("Would you like to play against the CPU this time? (Y/N)");
-                boolean yn = game.ynCheck(sc.nextLine());
-                if (p1.isAuto() || p2.isAuto()) {
+                boolean cpunext = game.ynCheck(sc.nextLine());
+                if ((p1.isAuto() || p2.isAuto()) && cpunext) {
                     System.out.println("The CPU has been reset.");
-                    if (p2.isAuto() && p1.isOut() && yn)
+                    if (p2.isAuto() && p1.isOut() && cpunext)
+                    // These two cases handle the option that the human loses to a computer and wishes to replace the loser with a CPU
+                        // It tells the user that one player is already the CPU and changes the human player to the other player slot
                     {
                         Player p3 = p1;
                         p1 = p2;
                         p2 = p3;
-                        p1.clear(yn);
+                        p1.clear(cpunext);
                     }
-                    if (p1.isAuto() && p2.isOut() && yn)
+                    if (p1.isAuto() && p2.isOut() && cpunext)
                     {
                         Player p3 = p2;
                         p2 = p1;
                         p1 = p3;
-                        p2.clear(yn);
+                        p2.clear(cpunext);
                     }
                 }
-                else if (p1.isOut() && !yn)
+                else if (p1.isOut() && !cpunext)
                 {
-                    p1.clear(yn);
+                    p1.clear(cpunext);
                 }
                 else
                 {
-                    p2.clear(yn);
+                    p2.clear(cpunext);
                 }
                 Play(p1, p2, game);
             }
@@ -126,6 +149,13 @@ public class Runner
         }
     }
 
+    /**
+     * This method handles the high score viewer and returns who the king is.
+     * @param game
+     * @param sc
+     * @param p1
+     * @param p2
+     */
     public static void bigScore(Gameboard game, Scanner sc, Player p1, Player p2)
     {
         System.out.println("Would you like to view your high scores? (Y/N)");
